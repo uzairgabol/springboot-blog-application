@@ -3,6 +3,7 @@ package com.uzairgabol.blog.controllers;
 import com.uzairgabol.blog.payloads.ApiResponse;
 import com.uzairgabol.blog.payloads.UserDto;
 import com.uzairgabol.blog.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,25 +19,25 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/create")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
         UserDto createUserDto = this.userService.createUser(userDto);
         return new ResponseEntity<>(createUserDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{userId}")
-    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, @PathVariable("userId") Integer userId){
+    public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto userDto, @PathVariable("userId") Integer userId){
         UserDto updateUserDto = this.userService.updateUser(userDto, userId);
         return ResponseEntity.ok(updateUserDto);
     }
 
     @DeleteMapping("/delete/{userId}")
-    public ResponseEntity<ApiResponse> deleteUser(@PathVariable int userId){
+    public ResponseEntity<ApiResponse> deleteUser(@Valid @PathVariable int userId){
         this.userService.deleteUser(userId);
         return new ResponseEntity<ApiResponse>(new ApiResponse("User Deleted Successfully", true), HttpStatus.OK);
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<UserDto> getUserbyId(@PathVariable int userId){
+    public ResponseEntity<UserDto> getUserbyId(@Valid @PathVariable int userId){
         UserDto user = this.userService.getUserbyId(userId);
         return ResponseEntity.ok(user);
     }
