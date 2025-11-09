@@ -1,0 +1,23 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: blog-app-db-container
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword    # change this!
+      MYSQL_DATABASE: blogapp           # optional: create default DB
+      MYSQL_USER: myuser                   # optional: create non-root user
+      MYSQL_PASSWORD: mypassword           # optional: set password for above user
+    ports:
+      - "3306:3306"                        # host:container
+    volumes:
+      - mysql_data:/var/lib/mysql          # persistent storage
+    networks:
+      - mysql_network
+
+volumes:
+  mysql_data:
+
+networks:
+  mysql_network:
+    driver: bridge
